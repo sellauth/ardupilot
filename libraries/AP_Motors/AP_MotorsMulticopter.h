@@ -176,6 +176,10 @@ protected:
     AP_Float            _spool_up_time;
     AP_Float            _spool_down_time;
 
+    // motor failure simulation
+    AP_Int8             _engine_fail_num; // the number of the motor to fail
+    AP_Float            _engine_fail_pct; // the percentage of the motor to fail
+
     // scaling for booster motor throttle
     AP_Float            _boost_scale;
 
