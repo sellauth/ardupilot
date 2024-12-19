@@ -179,7 +179,7 @@ void AP_MotorsMatrix::output_to_motors()
         if (motor_enabled[i]) {
             float output = _actuator[i];
 
-            if (i == _engine_fail_num) {
+            if (_engine_fail_num > 0 && i == (_engine_fail_num - 1)) {
                 output *= 1.0 - _engine_fail_pct / 100.0;
             }
 
