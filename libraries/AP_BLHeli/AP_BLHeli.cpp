@@ -429,7 +429,7 @@ void AP_BLHeli::msp_process_command(void)
 
     case MSP_STATUS: {
         debug("MSP_STATUS");
-        uint8_t buf[21];
+        uint8_t buf[22];
         putU16(&buf[0], 1000); // loop time usec
         putU16(&buf[2], 0);    // i2c error count
         putU16(&buf[4], 0x27); // available sensors
@@ -439,7 +439,8 @@ void AP_BLHeli::msp_process_command(void)
         putU16(&buf[13], 0);   // gyro cycle time
         buf[15] = 0;           // flight mode flags length
         buf[16] = 18;          // arming disable flags count
-        putU32(&buf[17], 0);   // arming disable flags
+        putU32(&buf[17], 4);   // arming disable flags ( fake RX_FAILSAFE so we can use ESC configurator/Bluejay)
+        buf[21] = 0;           // reboot required
         msp_send_reply(msp.cmdMSP, buf, sizeof(buf));
         break;
     }
@@ -456,12 +457,13 @@ void AP_BLHeli::msp_process_command(void)
 
     case MSP_BATTERY_STATE: {
         debug("MSP_BATTERY_STATE");
-        uint8_t buf[8];
+        uint8_t buf[9];
         buf[0] = 4; // cell count
         putU16(&buf[1], 1500); // mAh
         buf[3] = 16; // V
         putU16(&buf[4], 1500); // mAh
         putU16(&buf[6], 1); // A
+        buf[7] = 0; // MSP_BATTERY_OK
         msp_send_reply(msp.cmdMSP, buf, sizeof(buf));
         break;
     }
